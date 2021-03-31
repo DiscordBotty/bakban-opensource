@@ -1,9 +1,11 @@
 const Discord = require('discord.js');
 const client = new Discord.Client();
+const versionjson = require('./package.json');
 require('dotenv').config();
 
 client.on('ready', () => {
     console.log('Bot prêt !');
+    client.user.setActivity(`Version ${versionjson.version}`);
 });
 
 client.on('message', msg => {
@@ -15,7 +17,6 @@ client.on('message', msg => {
             const target = args[1];
             const reason = args[2];
             const typededuree = args[3];
-            const duree = args[4];
             if(!msg.author.id === "499297738370973716" || !msg.author.id === "432116536866766849"){
                 return msg.channel.send(':x: Vous n\'avez pas la permission d\'exécuter cette commande !')
             }
