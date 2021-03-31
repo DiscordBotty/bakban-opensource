@@ -59,21 +59,21 @@ client.on('message', msg => {
             }
             break;
         case 'isbakbanned':
-            const target = args[1];
+            const bannedtarget = args[1];
 
-            let yesorno = db.get(`${target}_banned`)
+            let yesorno = db.get(`${bannedtarget}_banned`)
             try{
                 if (yesorno === null || yesorno === false){
                     const embed = new Discord.MessageEmbed()
-                        .setTitle(`Status de ban de l'id ${target}`)
-                        .setDescription(`L'utilisateur avec l'ID ${target} **n'est pas banni**.`)
+                        .setTitle(`Status de ban de l'id ${bannedtarget}`)
+                        .setDescription(`L'utilisateur avec l'ID ${bannedtarget} **n'est pas banni**.`)
                         .setColor("#00FF00")
                     msg.channel.send(embed)
                 };
                 if (yesorno === true){
                     const embed = new Discord.MessageEmbed()
-                        .setTitle(`Status de ban de l'id ${target}`)
-                        .setDescription(`L'utilisateur avec l'ID ${target} **est banni**.`)
+                        .setTitle(`Status de ban de l'id ${bannedtarget}`)
+                        .setDescription(`L'utilisateur avec l'ID ${bannedtarget} **est banni**.`)
                         .setColor("#FF0000")
                     msg.channel.send(embed)
                 }
@@ -84,8 +84,8 @@ client.on('message', msg => {
             }
             break;
         case 'unbak-ban':
-            const target = args[1];
-            let bannedornot = db.get(`${target}_banned`);
+            const bantarget = args[1];
+            let bannedornot = db.get(`${bantarget}_banned`);
             if(!msg.author.id === "499297738370973716" || !msg.author.id === "432116536866766849"){
                 return msg.channel.send(':x: Vous n\'avez pas la permission d\'exécuter cette commande !')
             }
@@ -99,21 +99,13 @@ client.on('message', msg => {
                 if (bannedornot === false || bannedornot === null) {
                     return msg.channel.send("Cet utilisateur n'est pas bak-banni!")
                 }
-                db.set(`${target}_banned`, false);
-                db.set(`${target}_banreason`, null);
-                const embedusername = client.users.cache.find(user => user.id === target)
-                const dmembed = new Discord.MessageEmbed()
-                    .setTitle("Vous avez été débanni des serveurs Bak-Ban")
-                    .setDescription(`Vous avez été débanni.`)
-                    .setColor("#00FF00")
-                client.users.fetch(target, false).then((user) => {
-                    user.send(dmembed);
-                });
+                db.set(`${bantarget}_banned`, false);
+                db.set(`${bantarget}_banreason`, null);
                 const embed = new Discord.MessageEmbed()
                     .setTitle(`Bak-Ban`)
-                    .setDescription(`L'utilisateur avec l'ID ${target} a été débanni des serveurs Bak-Ban!`)
+                    .setDescription(`L'utilisateur avec l'ID ${bantarget} a été débanni des serveurs Bak-Ban!`)
                     .setColor("#00FF00")
-                client.channels.cache.get(`822504298839146592`).send(embed).then(setInterval(function(){client.guilds.cache.forEach(a => a.members.unban(target));},1500));
+                client.channels.cache.get(`822504298839146592`).send(embed).then(setInterval(function(){client.guilds.cache.forEach(a => a.members.unban(bantarget));},1500));
                 
                 
                 
