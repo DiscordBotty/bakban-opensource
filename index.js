@@ -85,7 +85,7 @@ client.on('message', msg => {
             break;
         case 'unbak-ban':
             const bantarget = args[1];
-            let bannedornot = db.get(`${bantarget}_banned`);
+            let isuserbannedornot = db.get(`${bantarget}_banned`);
             if(!msg.author.id === "499297738370973716" || !msg.author.id === "432116536866766849"){
                 return msg.channel.send(':x: Vous n\'avez pas la permission d\'exécuter cette commande !')
             }
@@ -96,7 +96,7 @@ client.on('message', msg => {
                 return msg.channel.send('Vous devez spécifier une raison valide ! Utilisation correcte de la commande : _bak-ban [id d\'utilisateur] [raison]')
             }
             try {
-                if (bannedornot === false || bannedornot === null) {
+                if (isuserbannedornot === false || isuserbannedornot === null) {
                     return msg.channel.send("Cet utilisateur n'est pas bak-banni!")
                 }
                 db.set(`${bantarget}_banned`, false);
