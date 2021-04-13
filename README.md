@@ -4,7 +4,7 @@ Le système Bak-Ban de Botty maintenant en open source !
 Botty Anti Hack est un nouveau genre de technique de bannissement et d'anti raid. le principe est que si vous avez été banni pour une cause grave (contenu sexuellement explicite, partage de donnes personnelles, raid), vois serez banni de tout les serveurs sécurisés par botty. 
 
 # Version
-Le bot est en version 3.0.0
+Le bot est en version 3.0.2
 
 # Questions-Réponses:
 
