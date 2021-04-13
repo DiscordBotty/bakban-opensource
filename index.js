@@ -9,7 +9,7 @@ client.on('ready', () => {
     client.user.setActivity(`Version ${versionjson.version}`);
 });
 
-client.on('message', msg => {
+client.on('message', async msg => {
     
     let args = msg.content.substring("_".length).split(" ");
 
@@ -167,18 +167,18 @@ client.on('message', msg => {
             }
             break;
         case 'bak-warns':
-            const user = msg.mentions.members.first() || msg.author
+            const warnsuser = msg.mentions.members.first() || msg.author
     
   
-            let warnings = db.get(`warnings_${msg.guild.id}_${user.id}`)
+            let warns = db.get(`warnings_${msg.guild.id}_${warnsuser.id}`)
     
     
-            if(warnings === null) warnings = 0;
+            if(warns === null) warns = 0;
 
-            if (user === msg.author){
-                msg.channel.send(`Vous avez **${warnings}** warn(s)`)
+            if (warnsuser === msg.author){
+                msg.channel.send(`Vous avez **${warns}** warn(s)`)
             }else{
-                msg.channel.send(`${user} à **${warnings}** warn(s)`)
+                msg.channel.send(`${warnsuser} a **${warns}** warn(s)`)
             }
             break;
         case 'bak-resetwarns':
@@ -190,9 +190,9 @@ client.on('message', msg => {
                 return msg.channel.send("Vous avez besoin d'être admin sur ce serveur pour utiliser cette commande !")
             }
               
-            const user = msg.mentions.members.first()
+            const resetuser = msg.mentions.members.first()
               
-            if(!user) {
+            if(!resetuser) {
               return msg.channel.send("Veuillez mentionner la personne dont vous voulez enlever les warns !")
             }
               
@@ -200,14 +200,14 @@ client.on('message', msg => {
                 return msg.channel.send("Les bots n'ont pas de warns !")
             }
               
-            let warnings = db.get(`warnings_${msg.guild.id}_${user.id}`)
+            let resetwarnings = db.get(`warnings_${msg.guild.id}_${resetuser.id}`)
               
-            if(warnings === null) {
+            if(resetwarnings === null) {
                 return msg.channel.send(`${msg.mentions.users.first().username} n'a pas de warns !`)
             }
               
-            db.delete(`warnings_${msg.guild.id}_${user.id}`)
-            user.send(`Vos warns ont été supprimés par ${msg.author.username} dans ${msg.guild.name}`)
+            db.delete(`warnings_${msg.guild.id}_${resetuser.id}`)
+            resetuser.send(`Vos warns ont été supprimés par ${msg.author.username} dans ${msg.guild.name}`)
             await msg.channel.send(`Warns de ${msg.mentions.users.first().username} supprimés !`)
               
     }
