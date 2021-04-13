@@ -116,6 +116,100 @@ client.on('message', msg => {
                 console.error(error)
                 msg.channel.send(':x: Une erreur s\'est produite ou l\'ID spécifié est invalide !')
             }
+            break;
+        case 'bak-warn':
+            if(!msg.author.id === "499297738370973716" || !msg.author.id === "432116536866766849") {
+                return msg.channel.send("Vous avez besoin de faire partie de l'équipe botty pour utiliser cette commande !")
+            }
+            
+            if (!msg.member.hasPermission("ADMINISTRATOR")) {
+                return msg.channel.send("Vous avez besoin d'être admin sur ce serveur pour utiliser cette commande !")
+            }
+
+            const user = msg.mentions.members.first()
+              
+            if(!user) {
+                return msg.channel.send("Veuillez mentionner la personne que vous voulez warn. - warn @mention <raison>")
+            }
+              
+            if(msg.mentions.users.first().bot) {
+                return msg.channel.send("Vous ne pouvez pas warn un bot !")
+            }
+              
+            if(msg.author.id === user.id) {
+                return msg.channel.send("Vous ne pouvez pas vous warn vous-même !")
+            }
+              
+            if(user.id === msg.guild.owner.id) {
+                return msg.channel.send("Vous ne pouvez pas warn le propriétaire de ce serveur. -_-")
+            }
+              
+            const warnreason = args[1];
+              
+            if(!warnreason) {
+                return msg.channel.send("Veuillez spécifier une raison de warn. - warn @mention <reason>")
+            }
+              
+            let warnings = db.get(`warnings_${msg.guild.id}_${user.id}`)
+              
+            if(warnings === 3) {
+                return msg.channel.send(`${msg.mentions.users.first().username} à déjà atteint sa limite de 3 warnings !`)
+            }
+              
+            if(warnings === null) {
+                db.set(`warnings_${msg.guild.id}_${user.id}`, 1)
+                user.send(`Vous avez été warn dans **${msg.guild.name}** par ${msg.author.username}${msg.author.discriminator} pour ${warnreason}`)
+                await msg.channel.send(`Vous avez warn **${msg.mentions.users.first().username}** pour ${warnreason}`)
+            } else if(warnings !== null) {
+                db.add(`warnings_${msg.guild.id}_${user.id}`, 1)
+                user.send(`Vous avez été warn dans **${msg.guild.name}** par ${msg.author.username}${msg.author.discriminator} pour ${warnreason}`)
+                await msg.channel.send(`Vous avez warn **${msg.mentions.users.first().username}** pour ${warnreason}`)
+            }
+            break;
+        case 'bak-warns':
+            const user = msg.mentions.members.first() || msg.author
+    
+  
+            let warnings = db.get(`warnings_${msg.guild.id}_${user.id}`)
+    
+    
+            if(warnings === null) warnings = 0;
+
+            if (user === msg.author){
+                msg.channel.send(`Vous avez **${warnings}** warn(s)`)
+            }else{
+                msg.channel.send(`${user} à **${warnings}** warn(s)`)
+            }
+            break;
+        case 'bak-resetwarns':
+            if(!msg.author.id === "499297738370973716" || !msg.author.id === "432116536866766849") {
+                return msg.channel.send("Vous avez besoin de faire partie de l'équipe botty pour utiliser cette commande !")
+            }
+            
+            if (!msg.member.hasPermission("ADMINISTRATOR")) {
+                return msg.channel.send("Vous avez besoin d'être admin sur ce serveur pour utiliser cette commande !")
+            }
+              
+            const user = msg.mentions.members.first()
+              
+            if(!user) {
+              return msg.channel.send("Veuillez mentionner la personne dont vous voulez enlever les warns !")
+            }
+              
+            if(msg.mentions.users.first().bot) {
+                return msg.channel.send("Les bots n'ont pas de warns !")
+            }
+              
+            let warnings = db.get(`warnings_${msg.guild.id}_${user.id}`)
+              
+            if(warnings === null) {
+                return msg.channel.send(`${msg.mentions.users.first().username} n'a pas de warns !`)
+            }
+              
+            db.delete(`warnings_${msg.guild.id}_${user.id}`)
+            user.send(`Vos warns ont été supprimés par ${msg.author.username} dans ${msg.guild.name}`)
+            await msg.channel.send(`Warns de ${msg.mentions.users.first().username} supprimés !`)
+              
     }
 })
 
