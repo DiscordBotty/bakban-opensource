@@ -12,20 +12,21 @@ client.on('ready', () => {
 client.on('message', async msg => {
     
     let args = msg.content.substring("_".length).split(" ");
+    let warnargs = msg.content.substring("_".length).split("  ");
 
     switch(args[0]){
         case 'bak-ban':
             const target = args[1];
-            const reason = args[2];
+            const reason = warnargs[1];
             let bannedornot = db.get(`${target}_banned`);
             if(!msg.author.id === "499297738370973716" || !msg.author.id === "432116536866766849"){
                 return msg.channel.send(':x: Vous n\'avez pas la permission d\'exécuter cette commande !')
             }
             if(!target) {
-                return msg.channel.send('Vous devez spécifier un id d\'utilisateur à Bak-Ban ! Utilisation correcte de la commande : _bak-ban [id d\'utilisateur] [raison]')
+                return msg.channel.send('Vous devez spécifier un id d\'utilisateur à Bak-Ban ! Utilisation correcte de la commande : _bak-ban [id d\'utilisateur] (deux espaces) [raison]')
             }
             if(!reason) {
-                return msg.channel.send('Vous devez spécifier une raison valide ! Utilisation correcte de la commande : _bak-ban [id d\'utilisateur] [raison]')
+                return msg.channel.send('Vous devez spécifier une raison valide ! Utilisation correcte de la commande : _bak-ban [id d\'utilisateur] (deux espaces) [raison]')
             }
             try {
                 if (bannedornot === true) {
@@ -129,7 +130,7 @@ client.on('message', async msg => {
             const user = msg.mentions.members.first()
               
             if(!user) {
-                return msg.channel.send("Veuillez mentionner la personne que vous voulez warn. - warn @mention <raison>")
+                return msg.channel.send("Veuillez mentionner la personne que vous voulez warn. - warn @mention (deux espaces) <raison>")
             }
               
             if(msg.mentions.users.first().bot) {
@@ -144,10 +145,10 @@ client.on('message', async msg => {
                 return msg.channel.send("Vous ne pouvez pas warn le propriétaire de ce serveur. -_-")
             }
               
-            const warnreason = args[1];
+            const warnreason = warnargs[1];
               
             if(!warnreason) {
-                return msg.channel.send("Veuillez spécifier une raison de warn. - warn @mention <reason>")
+                return msg.channel.send("Veuillez spécifier une raison de warn. - warn @mention (deux espaces) <reason>")
             }
               
             let warnings = db.get(`warnings_${msg.guild.id}_${user.id}`)
