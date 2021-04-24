@@ -1,3 +1,6 @@
+//tout le code qui suit à été codé par AQR_Rastiq
+
+
 const Discord = require('discord.js');
 const client = new Discord.Client();
 const versionjson = require('./package.json');
